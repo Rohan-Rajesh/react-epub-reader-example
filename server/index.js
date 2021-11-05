@@ -8,7 +8,7 @@ const key = new NodeRSA({ b: 512 });
 
 const app = express();
 app.use(cors());
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "./build")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -24,6 +24,4 @@ app.post("/decrypt", (req, res) => {
 
 app.get("/*", (req, res) => res.render(path.join(__dirname, "./index.html")));
 
-const PORT = process.env.PORT || 8080;
-
-app.listen(9000, () => console.log(`Server started on port ${PORT}`));
+app.listen(80, () => console.log(`Server started on port 80`));
