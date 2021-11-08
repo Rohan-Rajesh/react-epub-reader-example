@@ -1,6 +1,9 @@
 const express = require("express");
-const cors = require("cors");
+const https = require("https");
 const path = require("path");
+const fs = require("fs");
+
+const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const NodeRSA = require("node-rsa");
@@ -24,4 +27,12 @@ app.post("/decrypt", (req, res) => {
 
 app.get("/*", (req, res) => res.render(path.join(__dirname, "./index.html")));
 
-app.listen(80, () => console.log(`Server started on port 80`));
+const sslServer = https.createServer(
+  {
+    key: fs.readFileSync(path.join(__dirname, "cert/privatekey.key")),
+    cert: fs.readFileSync(path.join(__dirname, "cert/ssl_certificate.crt")),
+  },
+  app
+);
+
+sslServer.listen(80, () => console.log(`Server started on port 80`));
