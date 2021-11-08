@@ -35,4 +35,4 @@ const sslServer = https.createServer(
   app
 );
 
-sslServer.listen(80, () => console.log(`Server started on port 80`));
+sslServer.listen(443, () => console.log(`Server started on port 80`));
