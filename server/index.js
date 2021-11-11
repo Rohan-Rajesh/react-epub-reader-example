@@ -2,7 +2,7 @@ const express = require("express");
 const https = require("https");
 const path = require("path");
 const fs = require("fs");
-var http = require("http");
+var requestIp = require("request-ip");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -28,11 +28,8 @@ app.post("/decrypt", (req, res) => {
 });
 
 app.get("/getIp", (req, res) => {
-  http.get({ host: "api.ipify.org", port: 80, path: "/" }, function (resp) {
-    resp.on("data", function (ip) {
-      res.send(ip);
-    });
-  });
+  var clientIp = requestIp.getClientIp(req);
+  res.send(clientIp);
 });
 
 app.get("/*", (req, res) => res.render(path.join(__dirname, "./index.html")));
