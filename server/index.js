@@ -2,6 +2,7 @@ const express = require("express");
 const https = require("https");
 const path = require("path");
 const fs = require("fs");
+var http = require("http");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -21,8 +22,17 @@ app.post("/encrypt", (req, res) => {
 });
 
 app.post("/decrypt", (req, res) => {
-  const decrypted = key.decrypt(req.body.payload, "utf8");
-  res.send(decrypted);
+  const decryptedStr = key.decrypt(req.body.payload, "utf8");
+  const decryptedObj = decryptedStr.split(",");
+  res.json(decryptedObj);
+});
+
+app.get("/getIp", (req, res) => {
+  http.get({ host: "api.ipify.org", port: 80, path: "/" }, function (resp) {
+    resp.on("data", function (ip) {
+      res.send(ip);
+    });
+  });
 });
 
 app.get("/*", (req, res) => res.render(path.join(__dirname, "./index.html")));
